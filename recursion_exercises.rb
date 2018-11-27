@@ -129,7 +129,7 @@ end
 
 # binary search only works on sorted arrays. return location (index) of found object or nil if not found
 # compare to middle element, then if not it, search corresponding half
-# start with odd number of elements then do even
+# start with odd number of elements then do even - doesn't matter
 def bsearch(array, target)
   return nil if array.empty?
 
@@ -140,7 +140,7 @@ def bsearch(array, target)
 
   if target < mid_ele
     sub_arr = array[0...mid_idx]
-    return bsearch(sub_arr, target) 
+    return bsearch(sub_arr, target)
   else
     sub_arr = array[mid_idx + 1..-1]
     next_search = bsearch(sub_arr, target)
@@ -157,3 +157,50 @@ end
 # bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
 # bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
 # bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
+
+
+def merge_sort(arr)
+  return arr if arr.length <= 1
+
+  if arr.length.odd?
+    mid_idx = arr.length / 2
+  else
+    mid_idx = arr.length / 2 - 1
+  end
+
+  first_half = arr[0..mid_idx]
+  second_half = arr[mid_idx + 1..-1]
+
+  fh_split = merge_sort(first_half)
+  sh_split = merge_sort(second_half)
+
+  merge(fh_split, sh_split)
+end
+
+def merge(arr1, arr2)
+  new_arr = []
+  i = 0
+  j = 0
+
+  while i < arr1.length || j < arr2.length
+    fh_ele = arr1[i]
+    sh_ele = arr2[j]
+    if fh_ele == nil
+      new_arr << sh_ele
+      j += 1
+    elsif sh_ele == nil
+      new_arr << fh_ele
+      i += 1
+    elsif fh_ele < sh_ele
+      new_arr << fh_ele
+      i += 1
+    else
+      new_arr << sh_ele
+      j += 1
+    end
+  end
+
+  new_arr
+end
+
+# arr = [38, 27, 43, 3, 9, 82, 10]
