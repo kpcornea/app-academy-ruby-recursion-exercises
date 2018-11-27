@@ -71,9 +71,6 @@ end
 
 
 
-
-
-
 class Array
 
   def deep_dup
@@ -87,4 +84,44 @@ class Array
     end
   end
 
+end
+
+
+
+# 1, 1, 2, 3, 5, 8, etc
+
+# iterative using helper factory method
+# def fibo_iterative(n) # n == number of fibo numbers requested
+#   arr = []
+#   i = n
+#   until arr.length == n
+#     arr.unshift(fibo_factory(i))
+#     i -= 1
+#   end
+#   arr
+# end
+#
+# def fibo_factory(n)
+#   return 1 if n == 1
+#   return 1 if n == 2
+#   fibo_factory(n - 1) + fibo_factory(n - 2)
+# end
+
+def fibo_iterative(n)
+  return [1] if n == 1
+  return [1, 1] if n == 2
+  arr = [1, 1]
+  i = 2
+  until arr.length == n
+    arr << arr[i - 1] + arr[i - 2]
+    i += 1
+  end
+  arr
+end
+
+def fibo_recursive(n)
+  return [1] if n == 1
+  return [1, 1] if n == 2
+  last = fibo_recursive(n - 1)
+  last << last[-1] + last[-2]
 end
