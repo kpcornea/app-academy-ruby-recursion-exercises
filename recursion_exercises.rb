@@ -125,3 +125,35 @@ def fibo_recursive(n)
   last = fibo_recursive(n - 1)
   last << last[-1] + last[-2]
 end
+
+
+# binary search only works on sorted arrays. return location (index) of found object or nil if not found
+# compare to middle element, then if not it, search corresponding half
+# start with odd number of elements then do even
+def bsearch(array, target)
+  return nil if array.empty?
+
+  mid_idx = array.length / 2
+  mid_ele = array[mid_idx]
+
+  return mid_idx if target == mid_ele
+
+  if target < mid_ele
+    sub_arr = array[0...mid_idx]
+    return bsearch(sub_arr, target) 
+  else
+    sub_arr = array[mid_idx + 1..-1]
+    next_search = bsearch(sub_arr, target)
+    return nil if next_search == nil
+    return mid_idx + 1 + next_search
+  end
+end
+
+# examples
+# bsearch([1, 2, 3], 1) # => 0
+# bsearch([2, 3, 4, 5], 3) # => 1
+# bsearch([2, 4, 6, 8, 10], 6) # => 2
+# bsearch([1, 3, 4, 5, 9], 5) # => 3
+# bsearch([1, 2, 3, 4, 5, 6], 6) # => 5
+# bsearch([1, 2, 3, 4, 5, 6], 0) # => nil
+# bsearch([1, 2, 3, 4, 5, 7], 6) # => nil
