@@ -47,9 +47,22 @@ end
 #   odd_ans if n.odd?
 # end
 
+# version with exponentiation included by accident lol
+# def exp2(b, n)
+#   return 1 if n == 0
+#   return b if n == 1
+#   return exp2(b, n / 2) ** 2 if n.even?
+#   b * (exp2(b, (n - 1) / 2) ** 2) if n.odd?
+# end
+
 def exp2(b, n)
   return 1 if n == 0
   return b if n == 1
-  return exp2(b, n / 2) ** 2 if n.even?
-  b * (exp2(b, (n - 1) / 2) ** 2) if n.odd?
+  if n.even?
+    partial = exp2(b, n / 2)
+    return partial * partial
+  else
+    partial = exp2(b, (n - 1) / 2)
+    return b * (partial * partial)
+  end
 end
