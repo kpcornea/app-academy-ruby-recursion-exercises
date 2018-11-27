@@ -1,3 +1,5 @@
+require "byebug"
+
 def range(start, finish)
   return [] if finish < start
   return [start] if finish - 1 == start
@@ -65,4 +67,26 @@ def exp2(b, n)
     partial = exp2(b, (n - 1) / 2)
     return b * (partial * partial)
   end
+end
+
+
+
+
+
+
+class Array
+
+  def deep_dup
+    return self.dup if self.flatten == self
+    new_arr = []
+    self.each do |ele| # could probably do this with map
+      if ele.is_a?(Array)
+        new_arr << ele.deep_dup
+      else
+        new_arr << ele
+      end
+    end
+    new_arr
+  end
+
 end
