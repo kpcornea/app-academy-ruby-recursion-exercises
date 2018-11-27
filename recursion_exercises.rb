@@ -78,15 +78,13 @@ class Array
 
   def deep_dup
     return self.dup if self.flatten == self
-    new_arr = []
-    self.each do |ele| # could probably do this with map
+    self.map do |ele|
       if ele.is_a?(Array)
-        new_arr << ele.deep_dup
+        ele.deep_dup
       else
-        new_arr << ele
+        ele
       end
     end
-    new_arr
   end
 
 end
