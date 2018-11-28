@@ -204,3 +204,22 @@ def merge(arr1, arr2)
 end
 
 # arr = [38, 27, 43, 3, 9, 82, 10]
+
+# look at solution for this after
+# this works for arrays up to length 3, then breaks. don't think i did this right
+def subsets(arr)
+  return [arr] if arr.empty?
+
+  if arr.length.odd?
+    mid_idx = arr.length / 2
+  else
+    mid_idx = arr.length / 2 - 1
+  end
+
+  with_last = subsets(arr[1..-1])
+  without_last = subsets(arr[0...-1])
+  combined = subsets(arr[0...mid_idx] + arr[mid_idx + 1..-1])
+
+  output = without_last + combined + with_last + [arr]
+  output.uniq
+end
