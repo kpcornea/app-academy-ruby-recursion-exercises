@@ -207,7 +207,9 @@ end
 
 # look at solution for this after
 # this works for arrays up to length 3, then breaks. don't think i did this right
+# solve it iteratively so i can understand better? was harder lol
 def subsets(arr)
+  # byebug
   return [arr] if arr.empty?
 
   if arr.length.odd?
@@ -215,11 +217,71 @@ def subsets(arr)
   else
     mid_idx = arr.length / 2 - 1
   end
-
+# byebug
   with_last = subsets(arr[1..-1])
+  # byebug
   without_last = subsets(arr[0...-1])
-  combined = subsets(arr[0...mid_idx] + arr[mid_idx + 1..-1])
-
-  output = without_last + combined + with_last + [arr]
+  # byebug
+  combined1 = subsets(arr[0...mid_idx] + arr[mid_idx + 1..-1])
+  # combined2 = subsets(arr[0..mid_idx] + arr[mid_idx + 2..-1]) # this didn't work. still missing [1, 2, 4] with [1, 2, 3, 4] original input
+# byebug
+  output = without_last + combined1 + with_last + [arr]  # combined2
   output.uniq
+end
+
+
+# pretty weird iterative solution that gives me the right elements but not in exactly the right order...also doesn't work for arrays greater than length 3
+def subsets_iter(arr)
+  new_arr = [[]]
+  # byebug
+  i = 0
+  while i < arr.length
+# byebug
+    ele1 = arr[i]
+    new_arr << [ele1]
+
+    if arr.length > 2
+      sub_arr = [ele1]
+      j = i + 1
+      while j < arr.length
+        # byebug
+        ele2 = arr[j]
+        sub_arr << ele2
+        new_arr << sub_arr.dup
+        sub_arr.pop
+        j += 1
+      end
+    end
+    i += 1
+  end
+# byebug
+  new_arr << arr unless arr.length < 2
+
+  new_arr
+end
+
+
+
+
+
+
+
+# super lazy inefficient iterative way
+def permutations(arr)
+  return arr if arr.length <= 1
+# byebug
+  new_arr = [arr]
+  num_perms = factorial(arr.length)
+  # byebug
+  until new_arr.length == num_perms
+    new_arr << arr.shuffle
+    new_arr = new_arr.uniq
+    # byebug
+  end
+  new_arr
+end
+
+def factorial(n)
+  return n if n <= 1
+  n * factorial(n - 1)
 end
