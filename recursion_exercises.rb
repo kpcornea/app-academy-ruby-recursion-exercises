@@ -1,5 +1,8 @@
 require "byebug"
 
+# review permutations and subsets recursive solutions.
+# for review: contains deep_dup, fibonacci, binary search, merge sort, make change
+
 def range(start, finish)
   return [] if finish < start
   return [start] if finish - 1 == start
@@ -267,21 +270,59 @@ end
 
 
 # super lazy inefficient iterative way
-def permutations(arr)
-  return arr if arr.length <= 1
-# byebug
+def permutations_lazy_iter(arr)
   new_arr = [arr]
   num_perms = factorial(arr.length)
-  # byebug
+
   until new_arr.length == num_perms
     new_arr << arr.shuffle
     new_arr = new_arr.uniq
-    # byebug
   end
+
   new_arr
 end
 
 def factorial(n)
-  return n if n <= 1
+  return 1 if n <= 1
   n * factorial(n - 1)
+end
+
+# idk how recursively. def look at solution for this
+def permutations(arr)
+  return [arr] if arr.length <= 1
+
+  [arr.last] + permutations(arr[0...-1])
+end
+
+
+
+
+
+def make_better_change(amount, coins=[25, 10, 5, 1])
+  return [] if amount == 0
+  return [amount] if coins.include?(amount)
+
+  available = coins.select { |coin| coin < amount }
+
+  possible_solutions = []
+
+  available.each do |coin|
+    whats_left = amount - coin
+    less_than_or_equal_to_coin = available.select { |next_coin| next_coin <= coin }
+    possible_solutions << [coin] + make_better_change(whats_left, less_than_or_equal_to_coin)
+  end
+
+  possible_solutions.sort_by { |sub_arr| sub_arr.length }.first
+end
+
+
+
+def greedy_make_change(amount, coins=[25, 10, 5, 1])
+  return [] if amount == 0
+  return [amount] if coins.include?(amount)
+
+  largest_available = coins.select { |coin| coin < amount }.first
+  whats_left = amount - largest_available
+
+  [largest_available] + greedy_make_change(whats_left, coins)
 end
